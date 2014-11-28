@@ -24,4 +24,6 @@ public=${public:-/public}
 [ -r .acms.debug ] && echo EXITED .bash_profile >&2
 # PS1='\[\e[0;36m\][\u@\h]:\W:\!\$\[\e[0m\] '
 PS1='\[\e[0;36m\][\u@\h]:\W\$\[\e[0m\] '
-alias cmake="~/cmake.sh"
+alias make="~/cmake.sh"
+alias ref="~/ref.sh"
+alias tmux="~/tmux"

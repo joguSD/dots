@@ -17,7 +17,7 @@ autocmd FileType c,cpp,java set mps+==:;
 
 :set autowrite          " Automatically save before commands like :next/:make
 :set nobackup           " Do not make a backup before overwriting	
-:set columns=80         " Set the number of columns a new window will have
+":set columns=80         " Set the number of columns a new window will have
 :set expandtab	        " Tabs are extended into spaces
 :set formatoptions=tcrq " How to autoindent
 :set nogdefault         " Controls how the search and replace command is used
@@ -48,13 +48,15 @@ autocmd FileType c,cpp,java set mps+==:;
 :set number
 :colorscheme redplanet
 
+"dat bar do
+:set laststatus=2
 "For diff mode auto resize vertical splits
 au VimResized * if &diff | wincmd = | endif
 
 "Accounts for numberwidth when setting width to 80
-au BufRead * let &numberwidth = float2nr(log10(line("$"))) + 3
-          \| let &columns = &numberwidth + 80
-
+"au BufRead * let &numberwidth = float2nr(log10(line("$"))) + 3
+"          \| let &columns = &numberwidth + 80
+au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
 " Tell vim to remember certain things when we exit
 "  '10  :  marks will be remembered for up to 10 previously edited files
 "  "100 :  will save up to 100 lines for each register
