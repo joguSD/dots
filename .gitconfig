@@ -1,0 +1,12 @@
+[user]
+	name = Jordan Guymon
+	email = jguymon@ucsd.edu
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
+[alias]
+	d = difftool
+    c = commit
+    l = log --graph
+    co = checkout

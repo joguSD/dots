@@ -27,3 +27,5 @@ PS1='\[\e[0;36m\][\u@\h]:\W\$\[\e[0m\] '
 alias make="~/cmake.sh"
 alias ref="~/ref.sh"
 alias tmux="~/tmux"
+alias gc="git commit"
+tmux attach
