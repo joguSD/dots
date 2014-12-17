@@ -3,6 +3,7 @@
 [ -r .acms.debug ] && echo ENTERED .bashrc >&2
 public=${public:-/public}
 
+
 # Your .bashrc file is processed each time a new, non-login 
 # Bourne-Again SHell (bash) is initialized.
 # Changes made here will have no effect on the login bash shell;
