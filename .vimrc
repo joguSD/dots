@@ -1,6 +1,7 @@
 set nocompatible    " This line must be first or the changes you are expecting
                     " may not be the changes that occur
 
+
 set noautoread	    " Changing code in another window maintains two versions
 set backspace=2     " Allows backspace of indent, eol, and start
 set confirm         " Starts dialog when exiting without saving
