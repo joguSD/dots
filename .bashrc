@@ -8,7 +8,7 @@ public=${public:-/public}
 # Bourne-Again SHell (bash) is initialized.
 # Changes made here will have no effect on the login bash shell;
 # such changes should be made in .bash_profile. 
-# 
+#
 # All the usual setup is done by the following line.  Any additions 
 # you make should come after it. 
 #
