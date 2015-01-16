@@ -19,7 +19,6 @@ autocmd FileType c,cpp,java set mps+==:;
 :set autowrite          " Automatically save before commands like :next/:make
 :set nobackup           " Do not make a backup before overwriting	
 ":set columns=80         " Set the number of columns a new window will have
-:set expandtab	        " Tabs are extended into spaces
 :set formatoptions=tcrq " How to autoindent
 :set nogdefault         " Controls how the search and replace command is used
 :set helpheight=40      " Numbers of row the help window will have when opened
@@ -31,11 +30,12 @@ autocmd FileType c,cpp,java set mps+==:;
 :set ruler              " Always show position in file
 :set scrolloff=12       " Number of lines to keep around cursor
 :set shiftround         " Rounds < & > command to the nearest mod of shiftwidth
-:set shiftwidth=4       " Indent 4 instead of 8
+:set shiftwidth=2       " Indent 4 instead of 8
+:set tabstop=2	        " Tab stop is 4 instead of 8
+:set expandtab	        " Tabs are extended into spaces
 :set smartindent        " Next line indentation is based on previous line
 :set splitbelow         " Extra window open below the current window  
 :set noswapfile	        " No intermidiate files are used when saving
-:set tabstop=4	        " Tab stop is 4 instead of 8
 :set textwidth=80       " I do not like going all the way to the edge 
 :set undolevels=100     " The commands that can be stored in for undo
 :set virtualedit=all    " Cursor can go beyond the end of a line
@@ -57,7 +57,7 @@ au VimResized * if &diff | wincmd = | endif
 "Accounts for numberwidth when setting width to 80
 "au BufRead * let &numberwidth = float2nr(log10(line("$"))) + 3
 "          \| let &columns = &numberwidth + 80
-au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
+"au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
 " Tell vim to remember certain things when we exit
 "  '10  :  marks will be remembered for up to 10 previously edited files
 "  "100 :  will save up to 100 lines for each register
@@ -81,9 +81,21 @@ augroup END
 
 set cin
 set si
-set softtabstop=4
+"set softtabstop=2
 set showmatch
 
 " Ignores files when autocompleting      
 :set wildignore=*.o,*.bak,*.data,*.class
 
+" Expand tabs in C files to spaces
+au BufRead,BufNewFile *.{c,h,java} set expandtab
+au BufRead,BufNewFile *.{c,h,java} set shiftwidth=2
+au BufRead,BufNewFile *.{c,h,java} set tabstop=2
+
+" Do not expand tabs in assembly file.  Make them 8 chars wide.
+au BufRead,BufNewFile *.s set noexpandtab
+au BufRead,BufNewFile *.s set shiftwidth=8
+au BufRead,BufNewFile *.s set tabstop=8
+
+highlight ColorColumn ctermbg=magenta 
+call matchadd('ColorColumn', '\%81v', 100)

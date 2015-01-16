@@ -23,9 +23,11 @@ public=${public:-/public}
 # For example:  set path = ( $path ${HOME}/bin )
 [ -r .acms.debug ] && echo EXITED .bash_profile >&2
 # PS1='\[\e[0;36m\][\u@\h]:\W:\!\$\[\e[0m\] '
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${HOME}/lib/"
+export PATH="$PATH:${HOME}/bin/"
 PS1='\[\e[0;36m\][\u@\h]:\W\$\[\e[0m\] '
-alias make="~/cmake.sh"
 alias ref="~/ref.sh"
-alias tmux="~/tmux"
 alias gc="git commit"
+alias ls="ls --color"
+alias cc80="grep  '.\{80,\}' *"
 tmux attach
