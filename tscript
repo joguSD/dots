@@ -1,0 +1,118 @@
+#!/bin/bash
+#jogujogu
+#For colored output
+red='\033[0;31m'
+grn='\033[0;32m'
+NC='\033[0m'
+#The file to read line by line to get command line arguments
+FILE=testCases
+#Ignore the usage line since executable name will be different
+diffcmd='diff <(grep -v "^Usage:" ~/test.out) <(grep -v "^Usage:" ~/ref.out)'
+#The current homework assignment
+HW=${PWD##*/}
+#The local and reference executable
+refcmd="~/../public/${HW}test"
+if [ "$HW"  == "pa2" ]; then
+  localcmd="./BCDclock"
+else
+  localcmd="./$HW"
+fi
+if [ "$HW"  == "pa4" ]; then
+  localcmd="./myls"
+  refcmd="./pa4test"
+fi
+
+#Diffs the local executable against the sample executable.
+#Returns: 0 if no differences, 1 if there are differences
+diff_func () {
+  #./pa1 "$@" &> ~/test.out
+  eval $localcmd "$@" &> ~/test.out
+  #~/../public/pa1test "$@" &> ~/ref.out
+  eval $refcmd "$@" &> ~/ref.out
+  diffs=`eval $diffcmd | wc -l`
+  if [ "$diffs" == "0" ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+#Prints out arg1 and then returns 0 for yes, 1 for no
+prompt () {
+  echo -n "${1}"
+  read -p " (y/n) " -n 1 yn < /dev/tty
+  echo
+  case $yn in
+    [Yy]* ) return 0;;
+    * ) return 1;;
+  esac
+}
+
+#Executes the test case for the given line ($1)
+diff_test () {
+  if diff_func $1 ; then
+    echo "${grn}O${NC}"
+  else
+    echo "${red}X${NC}"
+    if prompt "Failed! Open in vimdiff?"; then
+      vimdiff ~/test.out ~/ref.out < /dev/tty
+    fi
+  fi
+}
+
+#Runs the specified test given its test number
+run_test () {
+  count=1
+  while read line;do
+    cmt=`grep "^#" <<< $line | wc -l`
+
+    #If it's a comment line do nothing
+    if [ "$cmt"  != "0" ]; then
+      continue
+    else #run the test case
+      if [[ $count = $1 ]]; then
+        echo -n "Test case ${count}: ${line} -- "
+        diff_test "$line"
+      fi
+      ((count++))
+    fi
+  done < $FILE
+}
+
+#Runs all the tests
+#Get each line of the file with the test cases and pass each line
+#as command line arguments to the executable.
+run_all_tests() {
+  echo "Running all test cases for: ${HW}"
+  count=1
+  while read line;do
+    cmt=`grep "^#" <<< $line | wc -l`
+
+    #If it's a comment line just echo it
+    if [ "$cmt"  != "0" ]; then
+      echo "${line}"
+    else #run the test case
+      echo -n "Test case ${count}: ${line} -- "
+      diff_test "$line"
+      ((count++))
+    fi
+  done < $FILE
+}
+
+#clean up output files
+cleanup() {
+  if [ -f ~/ref.out ]; then
+    rm ~/ref.out
+  fi
+  if [ -f ~/test.out ]; then
+    rm ~/test.out
+  fi
+}
+
+#MAIN CODE
+if [ "$1" != "" ]; then
+  run_test $1
+else
+  run_all_tests
+fi
+cleanup
