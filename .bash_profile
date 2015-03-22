@@ -3,18 +3,18 @@
 [ -r .acms.debug ] && echo ENTERED .bash_profile >&2
 public=${public:-/public}
 
-# All the usual setup is done by the following line.  Any additions 
-# you make should come after it. 
+# All the usual setup is done by the following line.  Any additions
+# you make should come after it.
 #
 [ -r $public/bash_profile.adjunct ] && . $public/bash_profile.adjunct
 
 # When this file was first placed in your home directory, a
-# pre-existing bashrc file may have been moved to a file named 
-# "${HOME}/.bashrc.old". Check the commands in that file be 
+# pre-existing bashrc file may have been moved to a file named
+# "${HOME}/.bashrc.old". Check the commands in that file be
 # sure they are still needed.
 
 
-# You may add commands to the end of this file as needed. 
+# You may add commands to the end of this file as needed.
 #
 # CAUTION: if you choose to make adjustments to PATH,
 # it is usually advisable to *add* to the existing PATH
@@ -23,11 +23,21 @@ public=${public:-/public}
 # For example:  set path = ( $path ${HOME}/bin )
 [ -r .acms.debug ] && echo EXITED .bash_profile >&2
 # PS1='\[\e[0;36m\][\u@\h]:\W:\!\$\[\e[0m\] '
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${HOME}/lib/"
-export PATH="$PATH:${HOME}/bin/"
+#export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${HOME}/lib"
+export PATH="$PATH:${HOME}/local/bin"
 PS1='\[\e[0;36m\][\u@\h]:\W\$\[\e[0m\] '
 alias ref="~/ref.sh"
 alias gc="git commit"
 alias ls="ls --color"
-alias cc80="grep  '.\{80,\}' *"
+alias cc80="grep -I '.\{80,\}' *"
+alias todo="grep TODO *"
+
+exit() {
+  if [[ -z $TMUX ]]; then
+    builtin exit
+  else
+    tmux detach
+  fi
+}
+
 tmux attach
